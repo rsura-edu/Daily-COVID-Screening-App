@@ -25,6 +25,8 @@
 		B7822A05281E64FD005E44C1 /* Screening.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7822A03281E64FD005E44C1 /* Screening.swift */; };
 		B7822A07281E8BB7005E44C1 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7822A06281E8BB7005E44C1 /* Profile.swift */; };
 		B7822A08281E8BB7005E44C1 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7822A06281E8BB7005E44C1 /* Profile.swift */; };
+		B7FCB037281FAF2700BBE3B7 /* Profile Info.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B7FCB035281FAF2700BBE3B7 /* Profile Info.xcdatamodeld */; };
+		B7FCB038281FAF2700BBE3B7 /* Profile Info.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B7FCB035281FAF2700BBE3B7 /* Profile Info.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,6 +63,7 @@
 		B7822A00281E6424005E44C1 /* Resources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Resources.swift; sourceTree = "<group>"; };
 		B7822A03281E64FD005E44C1 /* Screening.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Screening.swift; sourceTree = "<group>"; };
 		B7822A06281E8BB7005E44C1 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
+		B7FCB036281FAF2700BBE3B7 /* Profile Info.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Profile Info.xcdatamodel"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +101,7 @@
 		B71FC5A728153842008C9F84 = {
 			isa = PBXGroup;
 			children = (
+				B7FCB035281FAF2700BBE3B7 /* Profile Info.xcdatamodeld */,
 				B78229FD281E5E5A005E44C1 /* README.txt */,
 				B71FC5AC28153842008C9F84 /* Shared */,
 				B71FC5BB28153843008C9F84 /* macOS */,
@@ -319,6 +323,7 @@
 			files = (
 				B7822A04281E64FD005E44C1 /* Screening.swift in Sources */,
 				B7822A07281E8BB7005E44C1 /* Profile.swift in Sources */,
+				B7FCB037281FAF2700BBE3B7 /* Profile Info.xcdatamodeld in Sources */,
 				B7822A01281E6424005E44C1 /* Resources.swift in Sources */,
 				B71FC5D728153843008C9F84 /* ContentView.swift in Sources */,
 				B71FC5D528153843008C9F84 /* Daily_COVID_ScreeningApp.swift in Sources */,
@@ -331,6 +336,7 @@
 			files = (
 				B7822A05281E64FD005E44C1 /* Screening.swift in Sources */,
 				B7822A08281E8BB7005E44C1 /* Profile.swift in Sources */,
+				B7FCB038281FAF2700BBE3B7 /* Profile Info.xcdatamodeld in Sources */,
 				B7822A02281E6424005E44C1 /* Resources.swift in Sources */,
 				B71FC5D828153843008C9F84 /* ContentView.swift in Sources */,
 				B71FC5D628153843008C9F84 /* Daily_COVID_ScreeningApp.swift in Sources */,
@@ -725,6 +731,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		B7FCB035281FAF2700BBE3B7 /* Profile Info.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				B7FCB036281FAF2700BBE3B7 /* Profile Info.xcdatamodel */,
+			);
+			currentVersion = B7FCB036281FAF2700BBE3B7 /* Profile Info.xcdatamodel */;
+			path = "Profile Info.xcdatamodeld";
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = B71FC5A828153842008C9F84 /* Project object */;
 }

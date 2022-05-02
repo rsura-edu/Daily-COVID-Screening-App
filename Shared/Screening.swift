@@ -13,47 +13,47 @@ struct Screening: View {
     var body: some View {
         NavigationView {
             ScrollView{
-            VStack(alignment: .leading){
-                Questions()
-                Picker("",selection: $selectedCategory){
-                    ForEach(0 ..< yesOrNo.count){
-                        Text(self.yesOrNo[$0])
+                VStack(alignment: .leading){
+                    Questions()
+                    Picker("",selection: $selectedCategory){
+                        ForEach(0 ..< yesOrNo.count){
+                            Text(self.yesOrNo[$0])
+                        }
+                    }.pickerStyle(SegmentedPickerStyle())
+                        .frame(height: 70, alignment: .center)
+                        .pickerStyle(SegmentedPickerStyle())
+                    
+                    NavigationLink(destination: selectedCategory == 1 ? AnyView(ClearScreen()
+                        .navigationBarBackButtonHidden(Bool(true))) : AnyView(NotClearScreen()
+                            .navigationBarBackButtonHidden(Bool(true)))
+                    ) {
+                        Text("Submit")
+                            .frame(minWidth: 0, maxWidth: .infinity)
+                            .font(.system(size: 20))
+                            .padding()
+                            .foregroundColor(.white)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 15)
+                                    .stroke(Color.white, lineWidth: 2)
+                            )
+                            .background(Color.blue)
+                            .cornerRadius(15)
+                        //                    Button(action: {
+                        //
+                        //                    }) {
+                        
+                        
+                        //                    }
+                        
                     }
-                }.pickerStyle(SegmentedPickerStyle())
-                    .frame(height: 70, alignment: .center)
-                    .pickerStyle(SegmentedPickerStyle())
-                
-                NavigationLink(destination: selectedCategory == 1 ? AnyView(ClearScreen()
-                    .navigationBarBackButtonHidden(Bool(true))) : AnyView(NotClearScreen()
-                        .navigationBarBackButtonHidden(Bool(true)))
-                ) {
-                    Text("Submit")
-                        .frame(minWidth: 0, maxWidth: .infinity)
-                        .font(.system(size: 20))
-                        .padding()
-                        .foregroundColor(.white)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 15)
-                                .stroke(Color.white, lineWidth: 2)
-                        )
-                        .background(Color.blue)
-                        .cornerRadius(15)
-                    //                    Button(action: {
-                    //
-                    //                    }) {
                     
-                    
-                    //                    }
                     
                 }
-                
-                
-            }
-            .padding()
+                .padding()
             }
         }
-//        .navigationBarTitle("")
-//        .navigationBarHidden(true)
+        //        .navigationBarTitle("")
+        //        .navigationBarHidden(true)
         
     }
     
