@@ -12,6 +12,7 @@ struct Profile: View {
     @State private var lastName: String = ""
     @State private var email: String = ""
     @State private var message: String = ""
+    
     var body: some View {
         VStack{
             Form{
@@ -88,5 +89,8 @@ struct DataInput: View {
 struct Profile_Previews: PreviewProvider {
     static var previews: some View {
         Profile()
+            .previewInterfaceOrientation(.portrait)
     }
 }
+
+

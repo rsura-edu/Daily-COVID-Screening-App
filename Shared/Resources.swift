@@ -17,6 +17,7 @@ struct Resources: View {
                 .padding(.vertical)
             Divider()
             VStack{
+                LinkListItem(label: "(Alternative) Chapman's", linkText: "AM I CLEAR", link: "https://www.chapman.edu/amiclear")
                 LinkListItem(label: "Main Website:", linkText: "CU Back Safely", link: "https://cusafelyback.chapman.edu/")
                 LinkListItem(label: "Public Health", linkText: "OC Guidelines", link: "https://occovid19.ochealthinfo.com/")
                 LinkListItem(label: "Policy:", linkText: "Masks Indoors", link: "https://cusafelyback.chapman.edu/masks-recommended-indoors-for-both-vaccinated-and-unvaccinated-indivduals/")

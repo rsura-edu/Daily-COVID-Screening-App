@@ -9,7 +9,7 @@ import SwiftUI
 import SafariServices
 
 struct ContentView: View {
-    @State private var currPage = 1
+    @State private var currPage: Int = 1
     var body: some View {
         TabView(selection: $currPage){
             Screening()
