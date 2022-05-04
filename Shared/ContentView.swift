@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SafariServices
+import UserNotifications
 
 struct ContentView: View {
     @AppStorage("firstName") private var firstName: String = ""
@@ -15,45 +16,17 @@ struct ContentView: View {
     @AppStorage("dateLastSurvey") private var dateLastSurvey : Date = Date.distantPast
     @AppStorage("isClearLastSurvey") private var isClearLastSurvey : Bool = true
     @State private var currPage: Int = 1
-//    @Environment (\.managedObjectContext) private var viewContext
-//    @FetchRequest(sortDescriptors:[]) private var infoCD: FetchedResults<InfoCD>
+    //    @Environment (\.managedObjectContext) private var viewContext
+    //    @FetchRequest(sortDescriptors:[]) private var infoCD: FetchedResults<InfoCD>
     
     var body: some View {
-        
-        let content = UNMutableNotificationContent()
-        content.title = "Weekly Staff Meeting"
-        content.body = "Every Tuesday at 2pm"
-        
-        var dateComponents = DateComponents()
-        dateComponents.calendar = Calendar.current
-
-        dateComponents.hour = 0
-        dateComponents.minute = 0
-        dateComponents.second = 0
-           
-        // Create the trigger as a repeating event.
-        let trigger = UNCalendarNotificationTrigger(
-                 dateMatching: dateComponents, repeats: true)
-        
-        // Create the request
-        let uuidString = UUID().uuidString
-        let request = UNNotificationRequest(identifier: uuidString,
-                    content: content, trigger: trigger)
-
-        // Schedule the request with the system.
-        let notificationCenter = UNUserNotificationCenter.current()
-        notificationCenter.add(request) { (error) in
-           if error != nil {
-              // Handle any errors.
-           }
-        }
-        
         var todayScreen: AnyView = AnyView(Screening())
         let rightNow = Date()
+        notifications()
         
         if dateLastSurvey.get(.year) == rightNow.get(.year) && dateLastSurvey.get(.month) == rightNow.get(.month) &&
             dateLastSurvey.get(.day) == rightNow.get(.day){
-
+            
             if isClearLastSurvey {
                 todayScreen = AnyView(ClearScreen())
             } else {
@@ -78,6 +51,32 @@ struct ContentView: View {
                     Text("Profile")
                 }.tag(3)
         }
+    }
+    
+    func notifications(){
+        let notificationCenter = UNUserNotificationCenter.current()
+        notificationCenter.requestAuthorization(options: [.alert, .sound, .badge, .provisional]){ granted, error in
+            if error != nil {}
+        }
+        
+        let content = UNMutableNotificationContent()
+        content.title = "Daily Screening"
+        content.body = "Please Remember to fill out your Daily COVID Screening"
+        content.sound = .default
+        
+        var dateComponents = DateComponents()
+        dateComponents.calendar = Calendar.current
+        
+        dateComponents.hour = 0
+        
+        let trigger = UNCalendarNotificationTrigger(
+            dateMatching: dateComponents, repeats: true)
+        
+        let uuidString = UUID().uuidString
+        let request = UNNotificationRequest(identifier: uuidString,
+                                            content: content, trigger: trigger)
+        
+        UNUserNotificationCenter.current().add(request)
     }
 }
 

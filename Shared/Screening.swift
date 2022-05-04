@@ -229,6 +229,6 @@ extension Date: RawRepresentable {
 
 struct Screening_Previews: PreviewProvider {
     static var previews: some View {
-        ClearScreen()
+        Screening()
     }
 }
