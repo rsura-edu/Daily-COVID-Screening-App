@@ -11,7 +11,7 @@ struct Screening: View {
     @AppStorage("firstName") private var firstName: String = ""
     @AppStorage("lastName") private var lastName: String = ""
     @AppStorage("email") private var email: String = ""
-    @AppStorage("dateLastSurvey") private var dateLastSurvey : Date = Date()
+    @AppStorage("dateLastSurvey") private var dateLastSurvey : Date = Date.distantPast
     @AppStorage("isClearLastSurvey") private var isClearLastSurvey : Bool = true
     let yesOrNo = ["Yes","No"]
     @State private var selectedCategory = 1
@@ -25,38 +25,44 @@ struct Screening: View {
                             Text(self.yesOrNo[$0])
                         }
                     }.pickerStyle(SegmentedPickerStyle())
-                        .frame(height: 70, alignment: .center)
+                        .frame(height: 40, alignment: .center)
                         .pickerStyle(SegmentedPickerStyle())
                     
-                    NavigationLink(destination: selectedCategory == 1 ? AnyView(ClearScreen()
-                        .navigationBarBackButtonHidden(Bool(true))) : AnyView(NotClearScreen()
-                            .navigationBarBackButtonHidden(Bool(true)))
-                    ) {
-                        Text("Submit")
-                            .frame(minWidth: 0, maxWidth: .infinity)
-                            .font(.system(size: 20))
-                            .padding()
-                            .foregroundColor(.white)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 15)
-                                    .stroke(Color.white, lineWidth: 2)
-                            )
-                            .background(Color.blue)
-                            .cornerRadius(15)
-                        //                    Button(action: {
-                        //
-                        //                    }) {
-                        
-                        
-                        //                    }
-                        
+                    if (firstName == "" || lastName == "" || email == "") {
+                        Text("Please ensure to go to the Profile Section to update your info before filling out your COVID Screening")
+                            .foregroundColor(.red)
+                    } else {
+                        NavigationLink(destination: selectedCategory == 1 ? AnyView(ClearScreen()
+                            .navigationBarBackButtonHidden(Bool(true))) : AnyView(NotClearScreen()
+                                .navigationBarBackButtonHidden(Bool(true)))
+                        ) {
+                            Text("Submit")
+                                .frame(minWidth: 0, maxWidth: .infinity)
+                                .font(.system(size: 20))
+                                .padding()
+                                .foregroundColor(.white)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 15)
+                                        .stroke(Color.white, lineWidth: 2)
+                                )
+                                .background(Color.blue)
+                                .cornerRadius(15)
+                            //                    Button(action: {
+                            //
+                            //                    }) {
+                            
+                            
+                            //                    }
+                            
+                        }
+                        .simultaneousGesture(TapGesture().onEnded {
+                            dateLastSurvey = Date()
+                            isClearLastSurvey = (selectedCategory != 0)
+                            
+                            print(dateLastSurvey)
+                            print("Year: \(dateLastSurvey.get(.year)), Month: \(dateLastSurvey.get(.month)), Day: \(dateLastSurvey.get(.day)), Hour: \(dateLastSurvey.get(.hour)), Minute: \(dateLastSurvey.get(.minute)), Second: \(dateLastSurvey.get(.second))")
+                        })
                     }
-                    .simultaneousGesture(TapGesture().onEnded {
-                        dateLastSurvey = Date()
-                        print(dateLastSurvey)
-                    })
-                    
-                    
                 }
                 .padding()
             }
@@ -72,7 +78,7 @@ struct ClearScreen: View{
     @AppStorage("firstName") private var firstName: String = ""
     @AppStorage("lastName") private var lastName: String = ""
     @AppStorage("email") private var email: String = ""
-    @AppStorage("dateLastSurvey") private var dateLastSurvey : Date = Date()
+    @AppStorage("dateLastSurvey") private var dateLastSurvey : Date = Date.distantPast
     @AppStorage("isClearLastSurvey") private var isClearLastSurvey : Bool = true
     var body: some View{
         VStack{
@@ -86,7 +92,7 @@ struct NotClearScreen: View{
     @AppStorage("firstName") private var firstName: String = ""
     @AppStorage("lastName") private var lastName: String = ""
     @AppStorage("email") private var email: String = ""
-    @AppStorage("dateLastSurvey") private var dateLastSurvey : Date = Date()
+    @AppStorage("dateLastSurvey") private var dateLastSurvey : Date = Date.distantPast
     @AppStorage("isClearLastSurvey") private var isClearLastSurvey : Bool = true
     var body: some View{
         VStack{
@@ -106,7 +112,7 @@ struct Questions: View {
             Text("Are any of the following true for you?")
                 .font(.title3)
                 .padding(.vertical)
-            (Text("1. I am sick with ") +
+            (Text("1.").fontWeight(.bold) + Text(" I am sick with ") +
              Text("COVID-19 symptoms")
                 .foregroundColor(.blue))
             .onTapGesture {
@@ -115,10 +121,10 @@ struct Questions: View {
             .fullScreenCover(isPresented: $showSafari, content: {
                 SFSafariViewWrapper(url: URL(string: "https://www.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html")!)
             })
-            .padding([.leading, .bottom])
-            Text("2. I have been notified that I am COVID-19 positive or have come in close* contact with someone who has or is suspected of having COVID-19")
-                .padding([.leading, .bottom, .trailing])
-            (Text("3. I have a ") +
+            .padding(.leading)
+            (Text("2.").fontWeight(.bold) + Text(" I have been notified that I am COVID-19 positive or have come in close") + Text("*").fontWeight(.bold) + Text(" contact with someone who has or is suspected of having COVID-19"))
+                .padding(.horizontal)
+            (Text("3.").fontWeight(.bold) + Text(" I have a ") +
              Text("temperature")
                 .foregroundColor(.blue) +
              Text(" of 100.4 degrees F (or 38 C) or greater")
@@ -130,9 +136,9 @@ struct Questions: View {
                 SFSafariViewWrapper(url: URL(string: "https://www.cdc.gov/quarantine/air/reporting-deaths-illness/definitions-symptoms-reportable-illnesses.html")!)
             })
             .padding([.horizontal, .bottom])
-            Text("*Close contact means that you have been within six feet of a COVID-19 positive individual for at least 15 minutes cumulative within a 24 hour period.")
+            (Text("*").fontWeight(.bold) + Text("Close contact means that you have been within six feet of a COVID-19 positive individual for at least 15 minutes cumulative within a 24 hour period."))
                 .padding(.horizontal)
-            
+            Spacer()
         }
     }
 }
@@ -141,9 +147,21 @@ extension Date {
     func get(_ components: Calendar.Component..., calendar: Calendar = Calendar.current) -> DateComponents {
         return calendar.dateComponents(Set(components), from: self)
     }
-
+    
     func get(_ component: Calendar.Component, calendar: Calendar = Calendar.current) -> Int {
         return calendar.component(component, from: self)
+    }
+}
+
+extension Date: RawRepresentable {
+    private static let formatter = ISO8601DateFormatter()
+    
+    public var rawValue: String {
+        Date.formatter.string(from: self)
+    }
+    
+    public init?(rawValue: String) {
+        self = Date.formatter.date(from: rawValue) ?? Date()
     }
 }
 
