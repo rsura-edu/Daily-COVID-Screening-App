@@ -13,6 +13,13 @@ struct Screening: View {
     @AppStorage("email") private var email: String = ""
     @AppStorage("dateLastSurvey") private var dateLastSurvey : Date = Date.distantPast
     @AppStorage("isClearLastSurvey") private var isClearLastSurvey : Bool = true
+    
+    let dayOfWeek: Dictionary = [1 : "Sunday", 2 : "Monday", 3 : "Tuesday", 4 : "Wednesday", 5 : "Thursday", 6 : "Friday", 7 : "Saturday"]
+    
+    let monthOfYear: Dictionary = [ 1 : "January", 2 : "February", 3 : "March", 4 : "April", 5 : "May", 6 : "June", 7 : "July", 8 : "August", 9 : "September", 10 : "October", 11 : "November", 12 : "December"]
+    
+    let dayEndings: Dictionary = [1 : "st", 2 : "nd", 3 : "rd", 4 : "th", 5 : "th", 6 : "th", 7 : "th", 8 : "th", 9 : "th", 10 : "th", 11 : "th", 12 : "th", 13 : "th", 14 : "th", 15 : "th", 16 : "th", 17 : "th", 18 : "th", 19 : "th", 20 : "th", 21 : "st", 22 : "nd", 23 : "rd", 24 : "th", 25 : "th", 26 : "th", 27 : "th", 28 : "th", 29 : "th", 30 : "th", 31 : "st"]
+    
     let yesOrNo = ["Yes","No"]
     @State private var selectedCategory = 1
     var body: some View {
@@ -60,7 +67,7 @@ struct Screening: View {
                             isClearLastSurvey = (selectedCategory != 0)
                             
                             print(dateLastSurvey)
-                            print("Year: \(dateLastSurvey.get(.year)), Month: \(dateLastSurvey.get(.month)), Day: \(dateLastSurvey.get(.day)), Hour: \(dateLastSurvey.get(.hour)), Minute: \(dateLastSurvey.get(.minute)), Second: \(dateLastSurvey.get(.second))")
+                            print("Year: \(dateLastSurvey.get(.year)), Month: \(dateLastSurvey.get(.month)), Day of Week: \(dateLastSurvey.get(.weekday)) Day: \(dateLastSurvey.get(.day)), Hour: \(dateLastSurvey.get(.hour)), Minute: \(dateLastSurvey.get(.minute)), Second: \(dateLastSurvey.get(.second))")
                         })
                     }
                 }
@@ -80,10 +87,61 @@ struct ClearScreen: View{
     @AppStorage("email") private var email: String = ""
     @AppStorage("dateLastSurvey") private var dateLastSurvey : Date = Date.distantPast
     @AppStorage("isClearLastSurvey") private var isClearLastSurvey : Bool = true
+    @State private var showSafari: Bool = false
     var body: some View{
-        VStack{
-            Text("CLEAR")
-                .foregroundColor(.green)
+        let now = Date()
+        ScrollView {
+            VStack{
+                Image("Chapman Logo")
+                    .resizable()
+                    .frame(width: 250, height: 48, alignment: .center)
+                    .padding(.top).padding(.top)
+                (Text("\(firstName) \(lastName) has a ") + Text("CLEAR")
+                    .foregroundColor(.green).fontWeight(.bold) + Text(" COVID Daily Health Screen for \(Screening().dayOfWeek[now.get(.weekday)] ?? "Today"), \(Screening().monthOfYear[now.get(.month)] ?? "the") \(now.get(.day))\(Screening().dayEndings[now.get(.day)] ?? "th")."))
+                .font(.largeTitle)
+                .padding()
+                .padding(.vertical)
+                
+                HStack {
+                    Text("Been vaccinated? Register here.").foregroundColor(.blue)
+                        .font(.title3)
+                        .padding([.bottom,.horizontal])
+                        .onTapGesture {
+                            showSafari.toggle()
+                        }
+                        .fullScreenCover(isPresented: $showSafari, content: {
+                            SFSafariViewWrapper(url: URL(string: "https://web.chapman.edu/covid19vaccination")!)
+                    })
+                    Spacer()
+                }
+                
+                HStack{
+                    (Text("Resources for ") + Text("COVID-19 Vaccinations").foregroundColor(.blue))
+                    .font(.title3)
+                    .padding([.bottom,.leading])
+                    .onTapGesture {
+                        showSafari.toggle()
+                    }
+                    .fullScreenCover(isPresented: $showSafari, content: {
+                        SFSafariViewWrapper(url: URL(string: "https://cusafelyback.chapman.edu/covid-19-vaccination/")!)
+                    })
+                    Spacer()
+                }
+                
+                Text("To access a Chapman campus, ensure the following are also completed:")
+                    .font(.title3)
+                    .padding(.leading)
+                Text("• COVID-19 Safety Training via Canvas (staff, faculty, and student employees only)")
+                    .font(.title3)
+                    .padding(.leading).padding(.leading)
+                Text("• COVID-19 Test (all who are not vaccinated)")
+                    .font(.title3)
+                    .padding(.leading)
+                
+                
+                Spacer()
+            }
+            .padding()
         }
     }
 }
@@ -95,6 +153,7 @@ struct NotClearScreen: View{
     @AppStorage("dateLastSurvey") private var dateLastSurvey : Date = Date.distantPast
     @AppStorage("isClearLastSurvey") private var isClearLastSurvey : Bool = true
     var body: some View{
+        let now = Date()
         VStack{
             Text("NOT CLEAR")
                 .foregroundColor(.red)
@@ -167,6 +226,6 @@ extension Date: RawRepresentable {
 
 struct Screening_Previews: PreviewProvider {
     static var previews: some View {
-        Screening()
+        ClearScreen()
     }
 }

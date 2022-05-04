@@ -48,8 +48,6 @@ struct ContentView: View {
            }
         }
         
-        
-        
         var todayScreen: AnyView = AnyView(Screening())
         let rightNow = Date()
         
