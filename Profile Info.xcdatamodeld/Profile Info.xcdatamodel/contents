@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="20086" systemVersion="21E230" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="ProfileInfo" representedClassName="ProfileInfo" syncable="YES" codeGenerationType="class">
+    <entity name="InfoCD" representedClassName="InfoCD" syncable="YES" codeGenerationType="class">
         <attribute name="email" optional="YES" attributeType="String"/>
         <attribute name="firstName" optional="YES" attributeType="String"/>
+        <attribute name="isClearLastSurvey" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="lastName" optional="YES" attributeType="String"/>
+        <attribute name="surveyDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
     </entity>
     <elements>
-        <element name="ProfileInfo" positionX="-45" positionY="0" width="128" height="88"/>
+        <element name="InfoCD" positionX="-45" positionY="0" width="128" height="104"/>
     </elements>
 </model>

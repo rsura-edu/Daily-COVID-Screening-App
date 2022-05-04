@@ -8,7 +8,12 @@
 import SwiftUI
 
 struct Screening: View {
-    var yesOrNo = ["Yes","No"]
+    @AppStorage("firstName") private var firstName: String = ""
+    @AppStorage("lastName") private var lastName: String = ""
+    @AppStorage("email") private var email: String = ""
+    @AppStorage("dateLastSurvey") private var dateLastSurvey : Date = Date()
+    @AppStorage("isClearLastSurvey") private var isClearLastSurvey : Bool = true
+    let yesOrNo = ["Yes","No"]
     @State private var selectedCategory = 1
     var body: some View {
         NavigationView {
@@ -46,6 +51,10 @@ struct Screening: View {
                         //                    }
                         
                     }
+                    .simultaneousGesture(TapGesture().onEnded {
+                        dateLastSurvey = Date()
+                        print(dateLastSurvey)
+                    })
                     
                     
                 }
@@ -60,6 +69,11 @@ struct Screening: View {
 }
 
 struct ClearScreen: View{
+    @AppStorage("firstName") private var firstName: String = ""
+    @AppStorage("lastName") private var lastName: String = ""
+    @AppStorage("email") private var email: String = ""
+    @AppStorage("dateLastSurvey") private var dateLastSurvey : Date = Date()
+    @AppStorage("isClearLastSurvey") private var isClearLastSurvey : Bool = true
     var body: some View{
         VStack{
             Text("CLEAR")
@@ -69,6 +83,11 @@ struct ClearScreen: View{
 }
 
 struct NotClearScreen: View{
+    @AppStorage("firstName") private var firstName: String = ""
+    @AppStorage("lastName") private var lastName: String = ""
+    @AppStorage("email") private var email: String = ""
+    @AppStorage("dateLastSurvey") private var dateLastSurvey : Date = Date()
+    @AppStorage("isClearLastSurvey") private var isClearLastSurvey : Bool = true
     var body: some View{
         VStack{
             Text("NOT CLEAR")
@@ -115,6 +134,16 @@ struct Questions: View {
                 .padding(.horizontal)
             
         }
+    }
+}
+
+extension Date {
+    func get(_ components: Calendar.Component..., calendar: Calendar = Calendar.current) -> DateComponents {
+        return calendar.dateComponents(Set(components), from: self)
+    }
+
+    func get(_ component: Calendar.Component, calendar: Calendar = Calendar.current) -> Int {
+        return calendar.component(component, from: self)
     }
 }
 

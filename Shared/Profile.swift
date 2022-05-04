@@ -8,10 +8,11 @@
 import SwiftUI
 
 struct Profile: View {
-    @State private var firstName: String = ""
-    @State private var lastName: String = ""
-    @State private var email: String = ""
+    @AppStorage("firstName") private var firstName: String = ""
+    @AppStorage("lastName") private var lastName: String = ""
+    @AppStorage("email") private var email: String = ""
     @State private var message: String = ""
+//    @Environment(\.managedObjectContext) private var viewContext
     
     var body: some View {
         VStack{
@@ -33,6 +34,8 @@ struct Profile: View {
                     HStack {
                         TextField("Enter Email", text: $email)
                             .textFieldStyle(RoundedBorderTextFieldStyle())
+                            .textInputAutocapitalization(.never)
+                            .disableAutocorrection(true)
                         Text("@chapman.edu")
                     }
                 }
@@ -41,7 +44,11 @@ struct Profile: View {
                     Text(message).foregroundColor(.red)
                     Button(action: {
                         print("\(firstName) \(lastName)'s Chapman Email: \(email)@chapman.edu")
-                        updateDatabase()
+                        if (firstName == "" || lastName == "" || email == "") {
+                            message = "Please ensure to fill each field"
+                        } else {
+                            message = ""
+                        }
                     }){
                         Text("Update")
                             .frame(minWidth: 0, maxWidth: .infinity)
@@ -61,14 +68,6 @@ struct Profile: View {
             
         }
     }
-    
-    func updateDatabase(){
-        if (firstName == "" || lastName == "" || email == "") {
-            message = "Please ensure to fill each field"
-        } else {
-            message = ""
-        }
-    }
 }
 
 //: Takes in a string data type and stores it using binding variables
@@ -81,8 +80,21 @@ struct DataInput: View {
                 .font(.headline)
             TextField("Enter \(title)", text: $userInput)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
+                .disableAutocorrection(true)
         }
         .padding()
+    }
+}
+
+extension Date: RawRepresentable {
+    private static let formatter = ISO8601DateFormatter()
+
+    public var rawValue: String {
+        Date.formatter.string(from: self)
+    }
+
+    public init?(rawValue: String) {
+        self = Date.formatter.date(from: rawValue) ?? Date()
     }
 }
 

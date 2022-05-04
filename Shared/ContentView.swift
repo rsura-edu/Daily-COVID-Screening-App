@@ -9,7 +9,15 @@ import SwiftUI
 import SafariServices
 
 struct ContentView: View {
+    @AppStorage("firstName") private var firstName: String = ""
+    @AppStorage("lastName") private var lastName: String = ""
+    @AppStorage("email") private var email: String = ""
+    @AppStorage("dateLastSurvey") private var dateLastSurvey : Date = Date()
+    @AppStorage("isClearLastSurvey") private var isClearLastSurvey : Bool = true
     @State private var currPage: Int = 1
+//    @Environment (\.managedObjectContext) private var viewContext
+//    @FetchRequest(sortDescriptors:[]) private var infoCD: FetchedResults<InfoCD>
+    
     var body: some View {
         TabView(selection: $currPage){
             Screening()
