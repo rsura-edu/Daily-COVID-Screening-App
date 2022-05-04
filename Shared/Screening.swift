@@ -95,48 +95,51 @@ struct ClearScreen: View{
                 Image("Chapman Logo")
                     .resizable()
                     .frame(width: 250, height: 48, alignment: .center)
-                    .padding(.top).padding(.top)
+                    .padding(.top)
                 (Text("\(firstName) \(lastName) has a ") + Text("CLEAR")
                     .foregroundColor(.green).fontWeight(.bold) + Text(" COVID Daily Health Screen for \(Screening().dayOfWeek[now.get(.weekday)] ?? "Today"), \(Screening().monthOfYear[now.get(.month)] ?? "the") \(now.get(.day))\(Screening().dayEndings[now.get(.day)] ?? "th")."))
                 .font(.largeTitle)
                 .padding()
-                .padding(.vertical)
+                .padding(.top)
                 
                 HStack {
                     Text("Been vaccinated? Register here.").foregroundColor(.blue)
+                        .font(.title3)
+                        .padding()
+                        .onTapGesture {
+                            showSafari.toggle()
+                        }
+                        .fullScreenCover(isPresented: $showSafari, content: {
+                            SFSafariViewWrapper(url: URL(string: "https://web.chapman.edu/covid19vaccination")!)
+                        })
+                    Spacer()
+                }
+                
+                HStack{
+                    (Text("Resources for ") + Text("COVID-19 Vaccinations").foregroundColor(.blue))
                         .font(.title3)
                         .padding([.bottom,.horizontal])
                         .onTapGesture {
                             showSafari.toggle()
                         }
                         .fullScreenCover(isPresented: $showSafari, content: {
-                            SFSafariViewWrapper(url: URL(string: "https://web.chapman.edu/covid19vaccination")!)
-                    })
+                            SFSafariViewWrapper(url: URL(string: "https://cusafelyback.chapman.edu/covid-19-vaccination/")!)
+                        })
                     Spacer()
                 }
                 
-                HStack{
-                    (Text("Resources for ") + Text("COVID-19 Vaccinations").foregroundColor(.blue))
-                    .font(.title3)
-                    .padding([.bottom,.leading])
-                    .onTapGesture {
-                        showSafari.toggle()
-                    }
-                    .fullScreenCover(isPresented: $showSafari, content: {
-                        SFSafariViewWrapper(url: URL(string: "https://cusafelyback.chapman.edu/covid-19-vaccination/")!)
-                    })
+                HStack {
+                    Text("To access a Chapman campus, ensure the following are also completed:")
+                        .font(.title3)
+                    .padding(.horizontal)
                     Spacer()
                 }
-                
-                Text("To access a Chapman campus, ensure the following are also completed:")
+                Text("\t• COVID-19 Safety Training via Canvas (staff, faculty, and student employees only)")
                     .font(.title3)
-                    .padding(.leading)
-                Text("• COVID-19 Safety Training via Canvas (staff, faculty, and student employees only)")
+                    .padding(.horizontal)
+                Text("\t• COVID-19 Test (all who are not vaccinated)")
                     .font(.title3)
-                    .padding(.leading).padding(.leading)
-                Text("• COVID-19 Test (all who are not vaccinated)")
-                    .font(.title3)
-                    .padding(.leading)
+                    .padding(.horizontal)
                 
                 
                 Spacer()
