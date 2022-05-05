@@ -32,8 +32,6 @@ struct Resources: View {
                     LinkListItem(label: "COVID-19 Dashboard:", linkText: "Exposure in Facilities", link: "https://cusafelyback.chapman.edu/dashboard#pen")
                 }
                 
-                //            Link(label: "", linkText: "", link: "")
-                
                 Spacer()
             }.padding()
         }

@@ -12,7 +12,6 @@ struct Profile: View {
     @AppStorage("lastName") private var lastName: String = ""
     @AppStorage("email") private var email: String = ""
     @State private var message: String = ""
-//    @Environment(\.managedObjectContext) private var viewContext
     
     var body: some View {
         VStack{

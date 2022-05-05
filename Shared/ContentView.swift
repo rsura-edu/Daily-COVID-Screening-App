@@ -16,8 +16,6 @@ struct ContentView: View {
     @AppStorage("dateLastSurvey") private var dateLastSurvey : Date = Date.distantPast
     @AppStorage("isClearLastSurvey") private var isClearLastSurvey : Bool = true
     @State private var currPage: Int = 1
-    //    @Environment (\.managedObjectContext) private var viewContext
-    //    @FetchRequest(sortDescriptors:[]) private var infoCD: FetchedResults<InfoCD>
     
     var body: some View {
         var todayScreen: AnyView = AnyView(Screening())
@@ -68,6 +66,9 @@ struct ContentView: View {
         dateComponents.calendar = Calendar.current
         
         dateComponents.hour = 0
+        dateComponents.minute = 0
+        dateComponents.second = 0
+        dateComponents.nanosecond = 0
         
         let trigger = UNCalendarNotificationTrigger(
             dateMatching: dateComponents, repeats: true)

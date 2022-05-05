@@ -54,12 +54,6 @@ struct Screening: View {
                                 )
                                 .background(Color.blue)
                                 .cornerRadius(15)
-                            //                    Button(action: {
-                            //
-                            //                    }) {
-                            
-                            
-                            //                    }
                             
                         }
                         .simultaneousGesture(TapGesture().onEnded {
@@ -74,8 +68,6 @@ struct Screening: View {
                 .padding()
             }
         }
-        //        .navigationBarTitle("")
-        //        .navigationBarHidden(true)
         
     }
     
