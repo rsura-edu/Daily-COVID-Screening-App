@@ -22,6 +22,9 @@ struct Screening: View {
     
     let yesOrNo = ["Yes","No"]
     @State private var selectedCategory = 1
+    
+    @Environment(\.colorScheme) var colorScheme
+    
     var body: some View {
         NavigationView {
             ScrollView{
@@ -32,7 +35,7 @@ struct Screening: View {
                             Text(self.yesOrNo[$0])
                         }
                     }.pickerStyle(SegmentedPickerStyle())
-                        .frame(height: 40, alignment: .center)
+                        .frame(height: 50, alignment: .center)
                         .pickerStyle(SegmentedPickerStyle())
                     
                     if (firstName == "" || lastName == "" || email == "") {
@@ -50,7 +53,7 @@ struct Screening: View {
                                 .foregroundColor(.white)
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 15)
-                                        .stroke(Color.white, lineWidth: 2)
+                                        .stroke((colorScheme == .light ? .white : .black), lineWidth: 2)
                                 )
                                 .background(Color.blue)
                                 .cornerRadius(15)
@@ -80,11 +83,12 @@ struct ClearScreen: View{
     @AppStorage("dateLastSurvey") private var dateLastSurvey : Date = Date.distantPast
     @AppStorage("isClearLastSurvey") private var isClearLastSurvey : Bool = true
     @State private var showSafari: Bool = false
+    @Environment(\.colorScheme) var colorScheme
     var body: some View{
         let now = Date()
         ScrollView {
             VStack{
-                Image("Chapman Logo")
+                (colorScheme == .light ? Image("Chapman Logo") : Image("Dark Chapman Logo"))
                     .resizable()
                     .frame(width: 250, height: 48, alignment: .center)
                     .padding(.top)
@@ -147,20 +151,45 @@ struct NotClearScreen: View{
     @AppStorage("email") private var email: String = ""
     @AppStorage("dateLastSurvey") private var dateLastSurvey : Date = Date.distantPast
     @AppStorage("isClearLastSurvey") private var isClearLastSurvey : Bool = true
+    @State private var showSafari: Bool = false
+    @Environment(\.colorScheme) var colorScheme
     var body: some View{
         let now = Date()
-        VStack{
-            Text("NOT CLEAR")
-                .foregroundColor(.red)
+        ScrollView {
+            VStack{
+                (colorScheme == .light ? Image("Chapman Logo") : Image("Dark Chapman Logo"))
+                    .resizable()
+                    .frame(width: 250, height: 48, alignment: .center)
+                    .padding(.top)
+                (Text("\(firstName) \(lastName) is ") + Text("NOT CLEAR")
+                    .foregroundColor(.red).fontWeight(.bold) + Text(" COVID Daily Health Screen for \(Screening().dayOfWeek[now.get(.weekday)] ?? "Today"), \(Screening().monthOfYear[now.get(.month)] ?? "the") \(now.get(.day))\(Screening().dayEndings[now.get(.day)] ?? "th")."))
+                .font(.largeTitle)
+                .padding()
+                .padding(.top)
+                
+                Divider()
+                    .padding(.horizontal)
+                
+                Text("Please go to the Official Daily COVID Screening Chapman email for today's date and fill out the form, so that Chapman's Health Center can help assist you further in what needs to be done.")
+                    .font(.title3.italic())
+                    .padding(.vertical)
+                
+                Text("If you need further assistance, please email healthypanther@chapman.edu")
+                    .font(.title3.italic())
+                
+                Spacer()
+            }
+            .padding()
         }
     }
 }
 
 struct Questions: View {
     @State private var showSafari: Bool = false
+    @Environment(\.colorScheme) var colorScheme
     var body: some View {
         VStack(alignment: .leading){
-            Image("Chapman Logo")
+            (colorScheme == .light ? Image("Chapman Logo") : Image("Dark Chapman Logo"))
                 .resizable()
                 .frame(width: 250, height: 48, alignment: .center)
             Text("Are any of the following true for you?")

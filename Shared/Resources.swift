@@ -10,10 +10,11 @@ import SwiftUI
 import SafariServices
 
 struct Resources: View {
+    @Environment(\.colorScheme) var colorScheme
     var body: some View {
         ScrollView {
             VStack(alignment: .center){
-                Image("Chapman Logo")
+                (colorScheme == .light ? Image("Chapman Logo") : Image("Dark Chapman Logo"))
                     .resizable()
                     .frame(width: 250, height: 48)
                 Text("Chapman COVID Resources")

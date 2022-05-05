@@ -12,7 +12,7 @@ struct Profile: View {
     @AppStorage("lastName") private var lastName: String = ""
     @AppStorage("email") private var email: String = ""
     @State private var message: String = ""
-    
+    @Environment(\.colorScheme) var colorScheme
     var body: some View {
         VStack{
             Form{
@@ -56,7 +56,7 @@ struct Profile: View {
                             .foregroundColor(.white)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 15)
-                                    .stroke(Color.white, lineWidth: 2)
+                                    .stroke((colorScheme == .light ? .white : .black), lineWidth: 2)
                             )
                             .background(Color.blue)
                             .cornerRadius(15)
