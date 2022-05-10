@@ -6,3 +6,4 @@ https://stackoverflow.com/questions/53356392/how-to-get-day-and-month-from-date-
 https://developer.apple.com/documentation/usernotifications/asking_permission_to_use_notifications
 https://www.hackingwithswift.com/books/ios-swiftui/scheduling-local-notifications
 https://www.hackingwithswift.com/quick-start/swiftui/how-to-detect-dark-mode#:~:text=SwiftUI%20lets%20us%20detect%20whether,when%20the%20color%20scheme%20changes.
+https://stackoverflow.com/questions/57727107/how-to-get-the-iphones-screen-width-in-swiftui

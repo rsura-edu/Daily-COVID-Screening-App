@@ -16,7 +16,7 @@ struct ContentView: View {
     @AppStorage("dateLastSurvey") private var dateLastSurvey : Date = Date.distantPast
     @AppStorage("isClearLastSurvey") private var isClearLastSurvey : Bool = true
     @State private var currPage: Int = 1
-    
+    @Environment(\.colorScheme) var colorScheme
     var body: some View {
         var todayScreen: AnyView = AnyView(Screening())
         let rightNow = Date()
@@ -36,7 +36,8 @@ struct ContentView: View {
             }
         }
         
-        
+        UITabBar.appearance().backgroundImage = UIImage()
+        UITabBar.appearance().backgroundColor = (colorScheme == .light ? .white : .black)
         return TabView(selection: $currPage){
             todayScreen
                 .tabItem{

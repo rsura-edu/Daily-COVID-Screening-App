@@ -129,17 +129,25 @@ struct ClearScreen: View{
                     .padding(.horizontal)
                 Spacer()
             }
-            Text("\t• COVID-19 Safety Training via Canvas (staff, faculty, and student employees only)")
-                .font(.title3)
+            HStack {
+                Text("\t• COVID-19 Safety Training via Canvas (staff, faculty, and student employees only)")
+                    .font(.title3)
                 .padding(.horizontal)
-            Text("\t• COVID-19 Test (all who are not vaccinated)")
-                .font(.title3)
+                Spacer()
+            }
+            HStack {
+                Text("\t• COVID-19 Test (all who are not vaccinated)")
+                    .font(.title3)
                 .padding(.horizontal)
-            
+                Spacer()
+            }
             
             Spacer()
         }
             .padding()
+            .background(colorScheme == .light ? .white : .black)
+            
+            
         return ScrollView {
             VStack{
                 clear
@@ -159,7 +167,7 @@ struct ClearScreen: View{
                         .background(Color.blue)
                         .cornerRadius(15)
                 }
-                .padding(.horizontal)
+                .padding().padding(.bottom).padding(.bottom).padding(.bottom)
             }
         }
     }
@@ -193,19 +201,34 @@ struct NotClearScreen: View{
                 .font(.title3.italic())
                 .padding(.vertical)
             
-            Text("If you need further assistance, please email healthypanther@chapman.edu")
+            (Text("If you need further assistance, please email healthypanther@chapman.edu via your Chapman email address: ") + Text("\(email)@chapman.edu").foregroundColor(.blue))
                 .font(.title3.italic())
             
             Spacer()
         }
             .padding()
+            .background(colorScheme == .light ? .white : .black)
+        
         return ScrollView {
             VStack{
                 notClear
-                Button("Save to image") {
+                Button(action: {
                     let image = notClear.snapshot()
                     UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
+                }) {
+                    Text("Save as Image")
+                        .frame(minWidth: 0, maxWidth: .infinity)
+                        .font(.system(size: 20))
+                        .padding()
+                        .foregroundColor(.white)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 15)
+                                .stroke((colorScheme == .light ? .white : .black), lineWidth: 2)
+                        )
+                        .background(Color.blue)
+                        .cornerRadius(15)
                 }
+                .padding().padding(.bottom).padding(.bottom).padding(.bottom)
             }
         }
     }
@@ -281,9 +304,9 @@ extension View {
         let controller = UIHostingController(rootView: self)
         let view = controller.view
         
-        let targetSize = controller.view.intrinsicContentSize
+        let targetSize = CGSize(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height)
         view?.bounds = CGRect(origin: .zero, size: targetSize)
-        view?.backgroundColor = .clear
+        view?.backgroundColor = (ClearScreen().colorScheme == .light ? .white : .black)
         
         let renderer = UIGraphicsImageRenderer(size: targetSize)
         
