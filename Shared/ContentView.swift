@@ -25,12 +25,17 @@ struct ContentView: View {
         if dateLastSurvey.get(.year) == rightNow.get(.year) && dateLastSurvey.get(.month) == rightNow.get(.month) &&
             dateLastSurvey.get(.day) == rightNow.get(.day){
             
-            if isClearLastSurvey {
-                todayScreen = AnyView(ClearScreen())
+            if firstName != "" && lastName != "" && email != ""{
+                if isClearLastSurvey {
+                    todayScreen = AnyView(ClearScreen())
+                } else {
+                    todayScreen = AnyView(NotClearScreen())
+                }
             } else {
-                todayScreen = AnyView(NotClearScreen())
+                todayScreen = AnyView(removedProfile())
             }
         }
+        
         
         return TabView(selection: $currPage){
             todayScreen

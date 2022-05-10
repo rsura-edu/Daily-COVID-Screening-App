@@ -86,61 +86,81 @@ struct ClearScreen: View{
     @Environment(\.colorScheme) var colorScheme
     var body: some View{
         let now = Date()
-        ScrollView {
-            VStack{
-                (colorScheme == .light ? Image("Chapman Logo") : Image("Dark Chapman Logo"))
-                    .resizable()
-                    .frame(width: 250, height: 48, alignment: .center)
-                    .padding(.top)
-                (Text("\(firstName) \(lastName) has a ") + Text("CLEAR")
-                    .foregroundColor(.green).fontWeight(.bold) + Text(" COVID Daily Health Screen for \(Screening().dayOfWeek[now.get(.weekday)] ?? "Today"), \(Screening().monthOfYear[now.get(.month)] ?? "the") \(now.get(.day))\(Screening().dayEndings[now.get(.day)] ?? "th")."))
-                .font(.largeTitle)
-                .padding()
+        let clear = VStack{
+            (colorScheme == .light ? Image("Chapman Logo") : Image("Dark Chapman Logo"))
+                .resizable()
+                .frame(width: 250, height: 48, alignment: .center)
                 .padding(.top)
-                
-                HStack {
-                    Text("Been vaccinated? Register here.").foregroundColor(.blue)
-                        .font(.title3)
-                        .padding()
-                        .onTapGesture {
-                            showSafari.toggle()
-                        }
-                        .fullScreenCover(isPresented: $showSafari, content: {
-                            SFSafariViewWrapper(url: URL(string: "https://web.chapman.edu/covid19vaccination")!)
-                        })
-                    Spacer()
-                }
-                
-                HStack{
-                    (Text("Resources for ") + Text("COVID-19 Vaccinations").foregroundColor(.blue))
-                        .font(.title3)
-                        .padding([.bottom,.horizontal])
-                        .onTapGesture {
-                            showSafari.toggle()
-                        }
-                        .fullScreenCover(isPresented: $showSafari, content: {
-                            SFSafariViewWrapper(url: URL(string: "https://cusafelyback.chapman.edu/covid-19-vaccination/")!)
-                        })
-                    Spacer()
-                }
-                
-                HStack {
-                    Text("To access a Chapman campus, ensure the following are also completed:")
-                        .font(.title3)
-                    .padding(.horizontal)
-                    Spacer()
-                }
-                Text("\t• COVID-19 Safety Training via Canvas (staff, faculty, and student employees only)")
+            (Text("\(firstName) \(lastName) has a ") + Text("CLEAR")
+                .foregroundColor(.green).fontWeight(.bold) + Text(" COVID Daily Health Screen for \(Screening().dayOfWeek[now.get(.weekday)] ?? "Today"), \(Screening().monthOfYear[now.get(.month)] ?? "the") \(now.get(.day))\(Screening().dayEndings[now.get(.day)] ?? "th")."))
+            .font(.largeTitle)
+            .padding()
+            .padding(.top)
+            
+            HStack {
+                Text("Been vaccinated? Register here.").foregroundColor(.blue)
                     .font(.title3)
-                    .padding(.horizontal)
-                Text("\t• COVID-19 Test (all who are not vaccinated)")
-                    .font(.title3)
-                    .padding(.horizontal)
-                
-                
+                    .padding()
+                    .onTapGesture {
+                        showSafari.toggle()
+                    }
+                    .fullScreenCover(isPresented: $showSafari, content: {
+                        SFSafariViewWrapper(url: URL(string: "https://web.chapman.edu/covid19vaccination")!)
+                    })
                 Spacer()
             }
+            
+            HStack{
+                (Text("Resources for ") + Text("COVID-19 Vaccinations").foregroundColor(.blue))
+                    .font(.title3)
+                    .padding([.bottom,.horizontal])
+                    .onTapGesture {
+                        showSafari.toggle()
+                    }
+                    .fullScreenCover(isPresented: $showSafari, content: {
+                        SFSafariViewWrapper(url: URL(string: "https://cusafelyback.chapman.edu/covid-19-vaccination/")!)
+                    })
+                Spacer()
+            }
+            
+            HStack {
+                Text("To access a Chapman campus, ensure the following are also completed:")
+                    .font(.title3)
+                    .padding(.horizontal)
+                Spacer()
+            }
+            Text("\t• COVID-19 Safety Training via Canvas (staff, faculty, and student employees only)")
+                .font(.title3)
+                .padding(.horizontal)
+            Text("\t• COVID-19 Test (all who are not vaccinated)")
+                .font(.title3)
+                .padding(.horizontal)
+            
+            
+            Spacer()
+        }
             .padding()
+        return ScrollView {
+            VStack{
+                clear
+                Button(action: {
+                    let image = clear.snapshot()
+                    UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
+                }) {
+                    Text("Save as Image")
+                        .frame(minWidth: 0, maxWidth: .infinity)
+                        .font(.system(size: 20))
+                        .padding()
+                        .foregroundColor(.white)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 15)
+                                .stroke((colorScheme == .light ? .white : .black), lineWidth: 2)
+                        )
+                        .background(Color.blue)
+                        .cornerRadius(15)
+                }
+                .padding(.horizontal)
+            }
         }
     }
 }
@@ -155,34 +175,64 @@ struct NotClearScreen: View{
     @Environment(\.colorScheme) var colorScheme
     var body: some View{
         let now = Date()
-        ScrollView {
-            VStack{
-                (colorScheme == .light ? Image("Chapman Logo") : Image("Dark Chapman Logo"))
-                    .resizable()
-                    .frame(width: 250, height: 48, alignment: .center)
-                    .padding(.top)
-                (Text("\(firstName) \(lastName) is ") + Text("NOT CLEAR")
-                    .foregroundColor(.red).fontWeight(.bold) + Text(" COVID Daily Health Screen for \(Screening().dayOfWeek[now.get(.weekday)] ?? "Today"), \(Screening().monthOfYear[now.get(.month)] ?? "the") \(now.get(.day))\(Screening().dayEndings[now.get(.day)] ?? "th")."))
-                .font(.largeTitle)
-                .padding()
+        let notClear = VStack{
+            (colorScheme == .light ? Image("Chapman Logo") : Image("Dark Chapman Logo"))
+                .resizable()
+                .frame(width: 250, height: 48, alignment: .center)
                 .padding(.top)
-                
-                Divider()
-                    .padding(.horizontal)
-                
-                Text("Please go to the Official Daily COVID Screening Chapman email for today's date and fill out the form, so that Chapman's Health Center can help assist you further in what needs to be done.")
-                    .font(.title3.italic())
-                    .padding(.vertical)
-                
-                Text("If you need further assistance, please email healthypanther@chapman.edu")
-                    .font(.title3.italic())
-                
-                Spacer()
-            }
+            (Text("\(firstName) \(lastName) is ") + Text("NOT CLEAR")
+                .foregroundColor(.red).fontWeight(.bold) + Text(" COVID Daily Health Screen for \(Screening().dayOfWeek[now.get(.weekday)] ?? "Today"), \(Screening().monthOfYear[now.get(.month)] ?? "the") \(now.get(.day))\(Screening().dayEndings[now.get(.day)] ?? "th")."))
+            .font(.largeTitle)
             .padding()
+            .padding(.top)
+            
+            Divider()
+                .padding(.horizontal)
+            
+            Text("Please go to the Official Daily COVID Screening Chapman email for today's date and fill out the form, so that Chapman's Health Center can help assist you further in what needs to be done.")
+                .font(.title3.italic())
+                .padding(.vertical)
+            
+            Text("If you need further assistance, please email healthypanther@chapman.edu")
+                .font(.title3.italic())
+            
+            Spacer()
+        }
+            .padding()
+        return ScrollView {
+            VStack{
+                notClear
+                Button("Save to image") {
+                    let image = notClear.snapshot()
+                    UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
+                }
+            }
         }
     }
 }
+
+struct removedProfile: View{
+    @AppStorage("firstName") private var firstName: String = ""
+    @AppStorage("lastName") private var lastName: String = ""
+    @AppStorage("email") private var email: String = ""
+    @Environment(\.colorScheme) var colorScheme
+    var body: some View{
+        VStack(alignment: .leading){
+            (colorScheme == .light ? Image("Chapman Logo") : Image("Dark Chapman Logo"))
+                .resizable()
+                .frame(width: 250, height: 48, alignment: .center)
+                .padding(.vertical)
+                .padding(.top).padding(.top).padding(.top)
+            
+            Text("I'm sorry, but please make sure to have your profile fully filled out before having your screening ready")
+                .font(.largeTitle)
+                .foregroundColor(.red)
+                .padding(.vertical)
+            Spacer()
+        }.padding()
+    }
+}
+
 
 struct Questions: View {
     @State private var showSafari: Bool = false
@@ -226,6 +276,23 @@ struct Questions: View {
     }
 }
 
+extension View {
+    func snapshot() -> UIImage {
+        let controller = UIHostingController(rootView: self)
+        let view = controller.view
+        
+        let targetSize = controller.view.intrinsicContentSize
+        view?.bounds = CGRect(origin: .zero, size: targetSize)
+        view?.backgroundColor = .clear
+        
+        let renderer = UIGraphicsImageRenderer(size: targetSize)
+        
+        return renderer.image { _ in
+            view?.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+        }
+    }
+}
+
 extension Date {
     func get(_ components: Calendar.Component..., calendar: Calendar = Calendar.current) -> DateComponents {
         return calendar.dateComponents(Set(components), from: self)
@@ -250,6 +317,6 @@ extension Date: RawRepresentable {
 
 struct Screening_Previews: PreviewProvider {
     static var previews: some View {
-        Screening()
+        ClearScreen()
     }
 }
