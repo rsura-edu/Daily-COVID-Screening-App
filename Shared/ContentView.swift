@@ -17,6 +17,7 @@ struct ContentView: View {
     @AppStorage("isClearLastSurvey") private var isClearLastSurvey : Bool = true
     @State private var currPage: Int = 1
     @Environment(\.colorScheme) var colorScheme
+    @AppStorage("notification_id") var notificationID: String?
     var body: some View {
         var todayScreen: AnyView = AnyView(Screening())
         let rightNow = Date()
@@ -58,9 +59,12 @@ struct ContentView: View {
     }
     
     func notifications(){
-        let notificationCenter = UNUserNotificationCenter.current()
-        notificationCenter.requestAuthorization(options: [.alert, .sound, .badge, .provisional]){ granted, error in
-            if error != nil {}
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
+            if success {
+                print("All set!")
+            } else if let error = error {
+                print(error.localizedDescription)
+            }
         }
         
         let content = UNMutableNotificationContent()
@@ -79,11 +83,15 @@ struct ContentView: View {
         let trigger = UNCalendarNotificationTrigger(
             dateMatching: dateComponents, repeats: true)
         
-        let uuidString = UUID().uuidString
+        let uuidString = notificationID ?? UUID().uuidString
         let request = UNNotificationRequest(identifier: uuidString,
                                             content: content, trigger: trigger)
         
         UNUserNotificationCenter.current().add(request)
+        if notificationID != nil {
+            UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+            notificationID = nil
+        }
     }
 }
 
