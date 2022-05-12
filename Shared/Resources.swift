@@ -9,12 +9,13 @@ import Foundation
 import SwiftUI
 import SafariServices
 
+// Resources section of app
 struct Resources: View {
     @Environment(\.colorScheme) var colorScheme
     var body: some View {
         ScrollView {
-            VStack(alignment: .center){
-                (colorScheme == .light ? Image("Chapman Logo") : Image("Dark Chapman Logo"))
+            VStack(alignment: .center){ // resource list
+                (colorScheme == .light ? Image("Chapman Logo") : Image("Dark Chapman Logo")) // dark mode logo
                     .resizable()
                     .frame(width: 250, height: 48)
                 Text("Chapman COVID Resources")

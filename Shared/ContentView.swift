@@ -9,37 +9,34 @@ import SwiftUI
 import SafariServices
 import UserNotifications
 
+// Main content view. Has 3 tabs
 struct ContentView: View {
+    // name and email and most recent date of filled survey to be used for screening
     @AppStorage("firstName") private var firstName: String = ""
     @AppStorage("lastName") private var lastName: String = ""
     @AppStorage("email") private var email: String = ""
     @AppStorage("dateLastSurvey") private var dateLastSurvey : Date = Date.distantPast
     @AppStorage("isClearLastSurvey") private var isClearLastSurvey : Bool = true
-    @State private var currPage: Int = 1
-    @Environment(\.colorScheme) var colorScheme
-    @AppStorage("notification_id") var notificationID: String?
+    @State private var currPage: Int = 1 // first page is current tab
+    @Environment(\.colorScheme) var colorScheme // dark mode
     var body: some View {
-        var todayScreen: AnyView = AnyView(Screening())
+        var todayScreen: AnyView = AnyView(Screening()) // normal screening view
         let rightNow = Date()
-        notifications()
         
-        if dateLastSurvey.get(.year) == rightNow.get(.year) && dateLastSurvey.get(.month) == rightNow.get(.month) &&
-            dateLastSurvey.get(.day) == rightNow.get(.day){
+        if dateLastSurvey.get(.year) == rightNow.get(.year) && dateLastSurvey.get(.month) == rightNow.get(.month) && dateLastSurvey.get(.day) == rightNow.get(.day){ // checks if the date of the last survey was today to show the appropriate next view
             
             if firstName != "" && lastName != "" && email != ""{
-                if isClearLastSurvey {
+                if isClearLastSurvey { // if clear
                     todayScreen = AnyView(ClearScreen())
-                } else {
+                } else { // if not clear
                     todayScreen = AnyView(NotClearScreen())
                 }
-            } else {
+            } else { // if profile info was removed after filling the survey out
                 todayScreen = AnyView(removedProfile())
             }
         }
         
-        UITabBar.appearance().backgroundImage = UIImage()
-        UITabBar.appearance().backgroundColor = (colorScheme == .light ? .white : .black)
-        return TabView(selection: $currPage){
+        return TabView(selection: $currPage){ // main tab view
             todayScreen
                 .tabItem{
                     Image(systemName: "clock")
@@ -57,44 +54,9 @@ struct ContentView: View {
                 }.tag(3)
         }
     }
-    
-    func notifications(){
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
-            if success {
-                print("All set!")
-            } else if let error = error {
-                print(error.localizedDescription)
-            }
-        }
-        
-        let content = UNMutableNotificationContent()
-        content.title = "Daily Screening"
-        content.body = "Please Remember to fill out your Daily COVID Screening"
-        content.sound = .default
-        
-        var dateComponents = DateComponents()
-        dateComponents.calendar = Calendar.current
-        
-        dateComponents.hour = 0
-        dateComponents.minute = 0
-        dateComponents.second = 0
-        dateComponents.nanosecond = 0
-        
-        let trigger = UNCalendarNotificationTrigger(
-            dateMatching: dateComponents, repeats: true)
-        
-        let uuidString = notificationID ?? UUID().uuidString
-        let request = UNNotificationRequest(identifier: uuidString,
-                                            content: content, trigger: trigger)
-        
-        UNUserNotificationCenter.current().add(request)
-        if notificationID != nil {
-            UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
-            notificationID = nil
-        }
-    }
 }
 
+// Link to open in app browser formatted in an HStack, centered
 struct LinkListItem: View{
     @State public var label: String
     @State public var linkText: String
@@ -118,6 +80,8 @@ struct LinkListItem: View{
     }
 }
 
+
+// in app safari view
 struct SFSafariViewWrapper: UIViewControllerRepresentable {
     let url: URL
     

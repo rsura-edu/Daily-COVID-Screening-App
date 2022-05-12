@@ -7,3 +7,4 @@ https://developer.apple.com/documentation/usernotifications/asking_permission_to
 https://www.hackingwithswift.com/books/ios-swiftui/scheduling-local-notifications
 https://www.hackingwithswift.com/quick-start/swiftui/how-to-detect-dark-mode#:~:text=SwiftUI%20lets%20us%20detect%20whether,when%20the%20color%20scheme%20changes.
 https://stackoverflow.com/questions/57727107/how-to-get-the-iphones-screen-width-in-swiftui
+https://stackoverflow.com/questions/67493182/repeated-alarm-notifications-in-swiftui

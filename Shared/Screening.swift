@@ -7,30 +7,35 @@
 
 import SwiftUI
 
+// Main screening survey question view
 struct Screening: View {
+    // name and email and most recent date of filled survey to be used for screening
     @AppStorage("firstName") private var firstName: String = ""
     @AppStorage("lastName") private var lastName: String = ""
     @AppStorage("email") private var email: String = ""
     @AppStorage("dateLastSurvey") private var dateLastSurvey : Date = Date.distantPast
     @AppStorage("isClearLastSurvey") private var isClearLastSurvey : Bool = true
     
+    // day of week based on number
     let dayOfWeek: Dictionary = [1 : "Sunday", 2 : "Monday", 3 : "Tuesday", 4 : "Wednesday", 5 : "Thursday", 6 : "Friday", 7 : "Saturday"]
     
+    // month of year based on number
     let monthOfYear: Dictionary = [ 1 : "January", 2 : "February", 3 : "March", 4 : "April", 5 : "May", 6 : "June", 7 : "July", 8 : "August", 9 : "September", 10 : "October", 11 : "November", 12 : "December"]
     
+    // day ending based on number (like 17'th')
     let dayEndings: Dictionary = [1 : "st", 2 : "nd", 3 : "rd", 4 : "th", 5 : "th", 6 : "th", 7 : "th", 8 : "th", 9 : "th", 10 : "th", 11 : "th", 12 : "th", 13 : "th", 14 : "th", 15 : "th", 16 : "th", 17 : "th", 18 : "th", 19 : "th", 20 : "th", 21 : "st", 22 : "nd", 23 : "rd", 24 : "th", 25 : "th", 26 : "th", 27 : "th", 28 : "th", 29 : "th", 30 : "th", 31 : "st"]
     
     let yesOrNo = ["Yes","No"]
-    @State private var selectedCategory = 1
+    @State private var selectedCategory = 1 // default selection is a no
     
-    @Environment(\.colorScheme) var colorScheme
+    @Environment(\.colorScheme) var colorScheme // dark mode
     
     var body: some View {
         NavigationView {
             ScrollView{
                 VStack(alignment: .leading){
-                    Questions()
-                    Picker("",selection: $selectedCategory){
+                    Questions() // question list for symptom checking
+                    Picker("",selection: $selectedCategory){ // segmented picker
                         ForEach(0 ..< yesOrNo.count){
                             Text(self.yesOrNo[$0])
                         }
@@ -38,14 +43,14 @@ struct Screening: View {
                         .frame(height: 50, alignment: .center)
                         .pickerStyle(SegmentedPickerStyle())
                     
-                    if (firstName == "" || lastName == "" || email == "") {
+                    if (firstName == "" || lastName == "" || email == "") { // if profile not filled out, submit is not possible
                         Text("Please ensure to go to the Profile Section to update your info before filling out your COVID Screening")
                             .foregroundColor(.red)
                     } else {
                         NavigationLink(destination: selectedCategory == 1 ? AnyView(ClearScreen()
                             .navigationBarBackButtonHidden(Bool(true))) : AnyView(NotClearScreen()
                                 .navigationBarBackButtonHidden(Bool(true)))
-                        ) {
+                        ) { // submit leading to a different page
                             Text("Submit")
                                 .frame(minWidth: 0, maxWidth: .infinity)
                                 .font(.system(size: 20))
@@ -59,12 +64,9 @@ struct Screening: View {
                                 .cornerRadius(15)
                             
                         }
-                        .simultaneousGesture(TapGesture().onEnded {
+                        .simultaneousGesture(TapGesture().onEnded { // update survey date for app storage
                             dateLastSurvey = Date()
                             isClearLastSurvey = (selectedCategory != 0)
-                            
-                            print(dateLastSurvey)
-                            print("Year: \(dateLastSurvey.get(.year)), Month: \(dateLastSurvey.get(.month)), Day of Week: \(dateLastSurvey.get(.weekday)) Day: \(dateLastSurvey.get(.day)), Hour: \(dateLastSurvey.get(.hour)), Minute: \(dateLastSurvey.get(.minute)), Second: \(dateLastSurvey.get(.second))")
                         })
                     }
                 }
@@ -76,14 +78,16 @@ struct Screening: View {
     
 }
 
+// Clear Screen survey question view
 struct ClearScreen: View{
+    // name and email and most recent date of filled survey to be used for screening
     @AppStorage("firstName") private var firstName: String = ""
     @AppStorage("lastName") private var lastName: String = ""
     @AppStorage("email") private var email: String = ""
     @AppStorage("dateLastSurvey") private var dateLastSurvey : Date = Date.distantPast
     @AppStorage("isClearLastSurvey") private var isClearLastSurvey : Bool = true
-    @State private var showSafari: Bool = false
-    @Environment(\.colorScheme) var colorScheme
+    @State private var showSafari: Bool = false // for in app safari
+    @Environment(\.colorScheme) var colorScheme // for dark mode
     var body: some View{
         let now = Date()
         let clear = VStack{
@@ -148,10 +152,10 @@ struct ClearScreen: View{
             .background(colorScheme == .light ? .white : .black)
             
             
-        return ScrollView {
+        return ScrollView { // actual view to be returned
             VStack{
                 clear
-                Button(action: {
+                Button(action: { // saves the image with the view declared as 'clear'
                     let image = clear.snapshot()
                     UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
                 }) {
@@ -173,14 +177,16 @@ struct ClearScreen: View{
     }
 }
 
-struct NotClearScreen: View{
+// Not Clear Screen
+struct NotClearScreen: View{ // Similar to Clear view
+    // name and email and most recent date of filled survey to be used for screening
     @AppStorage("firstName") private var firstName: String = ""
     @AppStorage("lastName") private var lastName: String = ""
     @AppStorage("email") private var email: String = ""
     @AppStorage("dateLastSurvey") private var dateLastSurvey : Date = Date.distantPast
     @AppStorage("isClearLastSurvey") private var isClearLastSurvey : Bool = true
-    @State private var showSafari: Bool = false
-    @Environment(\.colorScheme) var colorScheme
+    @State private var showSafari: Bool = false // for in app safari
+    @Environment(\.colorScheme) var colorScheme // for dark mode
     var body: some View{
         let now = Date()
         let notClear = VStack{
@@ -209,10 +215,10 @@ struct NotClearScreen: View{
             .padding()
             .background(colorScheme == .light ? .white : .black)
         
-        return ScrollView {
+        return ScrollView { // actual view to be returned
             VStack{
                 notClear
-                Button(action: {
+                Button(action: { // saves the image with the view declared as 'clear'
                     let image = notClear.snapshot()
                     UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
                 }) {
@@ -234,11 +240,13 @@ struct NotClearScreen: View{
     }
 }
 
+// in case the profile info was removed after filling survey, it makes sure that profile info is complete
 struct removedProfile: View{
+    // name and email to be used for screening
     @AppStorage("firstName") private var firstName: String = ""
     @AppStorage("lastName") private var lastName: String = ""
     @AppStorage("email") private var email: String = ""
-    @Environment(\.colorScheme) var colorScheme
+    @Environment(\.colorScheme) var colorScheme // dark mode
     var body: some View{
         VStack(alignment: .leading){
             (colorScheme == .light ? Image("Chapman Logo") : Image("Dark Chapman Logo"))
@@ -256,7 +264,7 @@ struct removedProfile: View{
     }
 }
 
-
+// Symptop Checking subview
 struct Questions: View {
     @State private var showSafari: Bool = false
     @Environment(\.colorScheme) var colorScheme
@@ -299,6 +307,7 @@ struct Questions: View {
     }
 }
 
+// extension for taking a screenshot
 extension View {
     func snapshot() -> UIImage {
         let controller = UIHostingController(rootView: self)
@@ -316,6 +325,8 @@ extension View {
     }
 }
 
+
+// extension for getting calendar date stuff
 extension Date {
     func get(_ components: Calendar.Component..., calendar: Calendar = Calendar.current) -> DateComponents {
         return calendar.dateComponents(Set(components), from: self)
@@ -326,6 +337,7 @@ extension Date {
     }
 }
 
+// extension for making an empty date with no parameters
 extension Date: RawRepresentable {
     private static let formatter = ISO8601DateFormatter()
     

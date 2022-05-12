@@ -7,16 +7,19 @@
 
 import SwiftUI
 
+
+// Profile page (which is the third tab view)
 struct Profile: View {
+    // name and email to be used for screening
     @AppStorage("firstName") private var firstName: String = ""
     @AppStorage("lastName") private var lastName: String = ""
     @AppStorage("email") private var email: String = ""
     @State private var message: String = ""
-    @Environment(\.colorScheme) var colorScheme
+    @Environment(\.colorScheme) var colorScheme // dark mode
     var body: some View {
         VStack{
             Form{
-                HStack {
+                HStack { // person logo
                     Spacer()
                     Image(systemName: "person.fill")
                         .resizable()
@@ -40,15 +43,15 @@ struct Profile: View {
                 }
                 .padding()
                 VStack{
-                    Text(message).foregroundColor(.red)
-                    Button(action: {
+                    Text(message).foregroundColor(.red) // in case not all fields are filled out, it will display an error
+                    Button(action: { // update button action
                         print("\(firstName) \(lastName)'s Chapman Email: \(email)@chapman.edu")
                         if (firstName == "" || lastName == "" || email == "") {
                             message = "Please ensure to fill each field"
                         } else {
                             message = ""
                         }
-                    }){
+                    }){ // 'update' button style
                         Text("Update")
                             .frame(minWidth: 0, maxWidth: .infinity)
                             .font(.system(size: 20))
@@ -69,15 +72,15 @@ struct Profile: View {
     }
 }
 
-//: Takes in a string data type and stores it using binding variables
+// Takes in a string data type and stores it using binding variables
 struct DataInput: View {
     var title: String
     @Binding var userInput: String
     var body: some View {
         VStack(alignment: HorizontalAlignment.leading) {
-            (Text(title) + Text("*").foregroundColor(.red))
+            (Text(title) + Text("*").foregroundColor(.red)) // the required field name
                 .font(.headline)
-            TextField("Enter \(title)", text: $userInput)
+            TextField("Enter \(title)", text: $userInput) // text field for input
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .disableAutocorrection(true)
         }
