@@ -45,7 +45,6 @@ struct Profile: View {
                 VStack{
                     Text(message).foregroundColor(.red) // in case not all fields are filled out, it will display an error
                     Button(action: { // update button action
-                        print("\(firstName) \(lastName)'s Chapman Email: \(email)@chapman.edu")
                         if (firstName == "" || lastName == "" || email == "") {
                             message = "Please ensure to fill each field"
                         } else {
